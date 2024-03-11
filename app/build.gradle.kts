@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id ("kotlin-parcelize")
     id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
     id("dagger.hilt.android.plugin")
@@ -12,8 +13,10 @@ buildscript {
         google()
     }
     dependencies {
-        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:2.7.7")
-        classpath ("com.google.dagger:hilt-android-gradle-plugin:2.41")
+
+        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:2.8.0-alpha04")
+        classpath("com.google.dagger:hilt-android-gradle-plugin:2.41")
+
     }
 }
 
@@ -47,6 +50,9 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -76,7 +82,7 @@ dependencies {
 
 // Hilt
     implementation("com.google.dagger:hilt-android:2.41")
-    kapt ("com.google.dagger:hilt-android-compiler:2.41")
+    kapt("com.google.dagger:hilt-android-compiler:2.41")
 
 
 // Retrofit
@@ -93,5 +99,5 @@ dependencies {
 // Glide
     implementation("com.github.bumptech.glide:glide:4.13.0")
     //noinspection KaptUsageInsteadOfKsp
-    kapt ("com.github.bumptech.glide:compiler:4.13.0")
+    kapt("com.github.bumptech.glide:compiler:4.13.0")
 }
