@@ -5,6 +5,9 @@ plugins {
     id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
     id("dagger.hilt.android.plugin")
+
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 
@@ -15,7 +18,7 @@ buildscript {
     dependencies {
 
         classpath("androidx.navigation:navigation-safe-args-gradle-plugin:2.8.0-alpha04")
-        classpath("com.google.dagger:hilt-android-gradle-plugin:2.41")
+        classpath("com.google.dagger:hilt-android-gradle-plugin:2.50")
 
     }
 }
@@ -63,6 +66,7 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation ("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.10")
 
     // Dependencies
 // Lifecycle
@@ -81,8 +85,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
 
 // Hilt
-    implementation("com.google.dagger:hilt-android:2.41")
-    kapt("com.google.dagger:hilt-android-compiler:2.41")
+    implementation("com.google.dagger:hilt-android:2.50")
+    kapt("com.google.dagger:hilt-android-compiler:2.50")
 
 
 // Retrofit
