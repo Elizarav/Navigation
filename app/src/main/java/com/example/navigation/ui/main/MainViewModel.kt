@@ -1,35 +1,38 @@
 package com.example.navigation.ui.main
 
-import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.navigation.data.api.TestRepo
+import com.example.navigation.data.api.NewsRepository
+import com.example.navigation.data.api.NewsService
 import com.example.navigation.models.NewsResponse
+import com.example.navigation.utils.Resources
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import retrofit2.Response
+import okhttp3.Response
+import java.util.Locale.IsoCountryCode
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val repository: TestRepo) : ViewModel() {
-
-    private val _all = MutableLiveData<NewsResponse>()
-    val all: LiveData<NewsResponse>
-        get() = _all
+class MainViewModel @Inject constructor(private val repository: NewsRepository) : ViewModel() {
+    val newsLiveData: MutableLiveData<Resources<NewsResponse>> = MutableLiveData()
+    var newsPage = 1
 
     init {
-        getAll()
+        getNews("ru")
     }
-
-    private fun getAll() = viewModelScope.launch {
-        repository.getAll().let {
-            if (it.isSuccessful) {
-                _all.postValue(it.body())
+    //получаем список всех наших новостей и получаем данные из сервера
+    private fun getNews(countryCode: String) =
+        viewModelScope.launch {
+            newsLiveData.postValue(Resources.Loading())
+            val response = repository.getNews(countryCode = countryCode, pageNumber = newsPage)
+            if (response.isSuccessful) {
+                response.body().let { res ->
+                    newsLiveData.postValue(Resources.Success(res))
+                }
             } else {
-                Log.d("checkData", "Failed to load articles ${it.errorBody()}")
+                newsLiveData.postValue(Resources.Error(message = response.message()))
             }
         }
-    }
 }
